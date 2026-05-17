@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIGEA - Portal de Alumnos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="loginView" class="container-fluid vh-100 d-flex justify-content-center align-items-center bg-dark">
+        <div class="card p-4 shadow" style="width: 25rem; border-radius: 15px;">
+            <div class="text-center mb-4">
+                <h3 class="fw-bold">SIGEA</h3>
+                <p class="text-muted">Portal de Alumnos</p>
+            </div>
+            <form id="loginForm">
+                <div class="mb-3">
+                    <label class="form-label text-secondary">Matrícula</label>
+                    <input type="text" id="txtMatricula" class="form-control" placeholder="Ej. 20260001" required>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label text-secondary">Contraseña</label>
+                    <input type="password" id="txtPassword" class="form-control" placeholder="********" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100 fw-bold">Iniciar Sesión</button>
+                <div id="loginError" class="text-danger mt-3 text-center" style="display: none;"></div>
+            </form>
+        </div>
+    </div>
+
+    <div id="dashboardView" class="d-flex" style="display: none !important;">
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <h4>SIGEA</h4>
+                <small>Portal Alumnos</small>
+            </div>
+            <ul class="list-unstyled components">
+                <p>Principal</p>
+                <li><a href="#" id="btnMenuPerfil"><i class="bi bi-person-circle"></i> Perfil</a></li>
+                <li><a href="#" id="btnMenuHorario"><i class="bi bi-calendar3"></i> Horario</a></li>
+                <p>Académico</p>
+                <li><a href="#" id="btnMenuCalificaciones"><i class="bi bi-journal-text"></i> Calificaciones</a></li>
+                <p>Financiero</p>
+                <li><a href="#" id="btnMenuPagos"><i class="bi bi-credit-card"></i> Mis Pagos</a></li>
+            </ul>
+        </nav>
+
+        <div id="content">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light rounded mb-4 shadow-sm">
+                <div class="container-fluid">
+                    <span id="api-status" class="badge bg-secondary">Esperando API...</span>
+                    <div class="ms-auto">
+                        <button class="btn btn-outline-danger btn-sm" id="btnLogout">Cerrar Sesión</button>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="container-fluid">
+                <div class="card shadow-sm p-4">
+                    <div class="container-fluid">
+                
+                <div id="perfilView" class="card shadow-sm p-4 view-section">
+                    <h2 id="welcomeTitle">Bienvenido</h2>
+                    <p class="text-muted">Tu sesión ha iniciado correctamente con JWT.</p>
+                    <div id="dataDisplay">
+                        </div>
+                </div>
+
+                <div id="calificacionesView" class="card shadow-sm p-4 view-section" style="display: none;">
+                    <h3 class="text-primary"><i class="bi bi-journal-check"></i> Historial Académico</h3>
+                    <p class="text-muted">Consulta tus calificaciones por materia.</p>
+                    <hr>
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped mt-3">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Materia</th>
+                                    <th>Créditos</th>
+                                    <th>Calificación Final</th>
+                                    <th>Estatus</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tablaCalificaciones">
+                                <tr><td colspan="4" class="text-center">Cargando calificaciones...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="horarioView" class="card shadow-sm p-4 view-section" style="display: none;">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h3 class="text-primary"><i class="bi bi-calendar3"></i> Horario de Clases</h3>
+                            <p class="text-muted">Ciclo Escolar Actual</p>
+                        </div>
+                        <span class="badge bg-primary fs-6">8vo Semestre</span>
+                    </div>
+                    <hr>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover text-center align-middle mt-3">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th style="width: 15%;">Hora</th>
+                                    <th style="width: 17%;">Lunes</th>
+                                    <th style="width: 17%;">Martes</th>
+                                    <th style="width: 17%;">Miércoles</th>
+                                    <th style="width: 17%;">Jueves</th>
+                                    <th style="width: 17%;">Viernes</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tablaHorario">
+                                <tr><td colspan="6" class="text-center text-muted">Cargando horario...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="pagosView" class="card shadow-sm p-4 view-section" style="display: none;">
+                    <h3 class="text-primary"><i class="bi bi-credit-card"></i> Estado de Cuenta</h3>
+                    <p class="text-muted">Consulta tus referencias bancarias y estatus de pago.</p>
+                    <hr>
+                    <div class="table-responsive">
+                        <table class="table table-hover mt-3">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Concepto</th>
+                                    <th>Referencia Bancaria</th>
+                                    <th>Fecha Emisión</th>
+                                    <th>Monto</th>
+                                    <th>Estatus</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tablaPagos">
+                                <tr><td colspan="5" class="text-center text-muted">Cargando pagos...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+                    <p class="text-muted">Tu sesión ha iniciado correctamente con JWT.</p>
+                    <div id="dataDisplay">
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
