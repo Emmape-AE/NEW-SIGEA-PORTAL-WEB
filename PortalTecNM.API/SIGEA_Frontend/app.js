@@ -19,10 +19,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnLogout = document.getElementById("btnLogout");
     const loginError = document.getElementById("loginError");
 
-    // 1. Verificar si ya tenemos un "gafete" guardado al cargar la página
+  // 1. Verificar si ya tenemos un "gafete" guardado al cargar la página
     const token = localStorage.getItem("jwt_token");
+    const rol = localStorage.getItem("user_role"); // <- Leemos qué rol tenía
+
     if (token) {
-        mostrarDashboard();
+        if (rol === "Admin") {
+            window.location.href = "admin.html"; // Lo mandamos a su panel
+        } else {
+            mostrarDashboard(); // Se queda en el portal de alumno
+        }
     }
 
     // 2. Evento: Cuando el usuario le da a "Iniciar Sesión"
@@ -42,9 +48,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (response.ok) {
                 const data = await response.json();
-                // ¡Aprobado! Guardamos el token en la caja fuerte del navegador
+                
+                // ¡Aprobado! Guardamos el token y el ROL en la caja fuerte del navegador
                 localStorage.setItem("jwt_token", data.token);
-                mostrarDashboard();
+                localStorage.setItem("user_role", data.rol);
+
+                // --- EL CADENERO INTELIGENTE ---
+                if (data.rol === "Admin") {
+                    // Si es el Jefe, lo mandamos a la ruta VIP
+                    window.location.href = "admin.html";
+                } else {
+                    // Si es Alumno, le abrimos el panel de aquí mismo
+                    mostrarDashboard();
+                }
+                
                 loginError.style.display = "none";
             } else {
                 // Rechazado: Mostramos error

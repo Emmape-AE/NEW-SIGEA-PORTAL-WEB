@@ -69,7 +69,8 @@ namespace PortalTecNM.API.Controllers
             return Ok(new
             {
                 mensaje = "Login exitoso",
-                token = new JwtSecurityTokenHandler().WriteToken(token)
+                token = new JwtSecurityTokenHandler().WriteToken(token),
+                rol = usuario.Rol // <-- ESTA ES LA LÍNEA MÁGICA NUEVA
             });
         }
     }
