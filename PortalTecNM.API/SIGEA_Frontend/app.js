@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:5289/api";
+const API_URL = "http://emmanuelpena-001-site1.ktempurl.com/api";
 
 document.addEventListener("DOMContentLoaded", () => {
     // Referencias a las pantallas
