@@ -1,4 +1,4 @@
-const API_URL = "http://emmanuelpena-001-site1.ktempurl.com/api";
+const API_URL = "https://emmanuelpena-001-site1.ktempurl.com/api";
 
 document.addEventListener("DOMContentLoaded", () => {
     // Referencias a las pantallas
